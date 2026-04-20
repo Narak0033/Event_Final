@@ -160,10 +160,11 @@
                   <th>Check-in</th>
                   <th>Email</th>
                   <th>Registered At</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="my-reg-tbody">
-                <tr class="loading-row"><td colspan="5">Loading participants…</td></tr>
+                <tr class="loading-row"><td colspan="6">Loading participants…</td></tr>
               </tbody>
             </table>
           </div>
@@ -171,109 +172,6 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════
-         PAGE: ADMIN — DASHBOARD
-         ══════════════════════════════════════ -->
-    <section class="page-section" id="admin-dashboard">
-      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:24px">
-        <div class="stat-card">
-          <div class="stat-label">Total Registered</div>
-          <div class="stat-value" id="stat-total2">—</div>
-        </div>
-        <div class="stat-card accent">
-          <div class="stat-label">Spots Remaining</div>
-          <div class="stat-value" id="stat-spots2">—</div>
-        </div>
-        <div class="stat-card success">
-          <div class="stat-label">Faculties Represented</div>
-          <div class="stat-value" id="stat-faculties2">—</div>
-        </div>
-      </div>
-
-      <div class="two-col">
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Team Responsibilities</span>
-          </div>
-          <div class="panel-body">
-            <table>
-              <thead>
-                <tr><th>Member</th><th>Module</th><th>Responsibility</th></tr>
-              </thead>
-              <tbody>
-                <tr><td><strong>Kim Soklin</strong></td><td><span class="badge-faculty">GET</span></td><td>Fetch &amp; render participants</td></tr>
-                <tr><td><strong>Tan Lydana</strong></td><td><span class="badge-faculty">POST</span></td><td>Create registration form</td></tr>
-                <tr><td><strong>Meas Marady</strong></td><td><span class="badge-faculty">Validation</span></td><td>Client-side form validation</td></tr>
-                <tr><td><strong>Khon Davy</strong></td><td><span class="badge-faculty">PUT</span></td><td>Edit registration records</td></tr>
-                <tr><td><strong>Yorn Rothana</strong></td><td><span class="badge-faculty">DELETE</span></td><td>Delete with confirm modal</td></tr>
-                <tr><td><strong>Horn Narak</strong></td><td><span class="badge-faculty">Search</span></td><td>Live search &amp; faculty filter</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Project Architecture</span>
-          </div>
-          <div class="panel-body">
-            <table>
-              <thead><tr><th>File</th><th>Role</th></tr></thead>
-              <tbody>
-                <tr><td><code>index.html</code></td><td>Single-page app shell</td></tr>
-                <tr><td><code>css/style.css</code></td><td>Global styles &amp; design tokens</td></tr>
-                <tr><td><code>js/main.js</code></td><td>App entry, navigation, event binding</td></tr>
-                <tr><td><code>js/modules/api.js</code></td><td>All fetch() API calls (CRUD)</td></tr>
-                <tr><td><code>js/modules/validation.js</code></td><td>Field rules &amp; live validation</td></tr>
-                <tr><td><code>js/modules/search.js</code></td><td>Filter &amp; search logic</td></tr>
-                <tr><td><code>js/modules/dom.js</code></td><td>Table render, modals, alerts</td></tr>
-                <tr><td><code>tests/test-cases.html</code></td><td>Manual test case sheet</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel mt-6">
-        <div class="panel-header">
-          <span class="panel-title">Challenges, Lessons &amp; Future Enhancements</span>
-        </div>
-        <div class="panel-body">
-          <div class="two-col">
-            <div>
-              <h4 style="font-weight:700;color:var(--navy);margin-bottom:8px;font-size:.9rem">⚡ Challenges Faced</h4>
-              <ul style="list-style:disc;padding-left:18px;color:var(--gray-600);font-size:.875rem;line-height:1.8">
-                <li>JSONPlaceholder only simulates writes — data isn't truly persisted, requiring optimistic UI updates to stay in sync.</li>
-                <li>Coordinating 6 separate JS modules without a bundler required disciplined use of ES6 <code>import/export</code>.</li>
-                <li>Email validation had to balance strictness (must end in <code>.edu.kh</code>) with flexibility for varied AUPP email formats.</li>
-                <li>Modal state (editing ID, deleting ID) needed careful management to prevent stale-closure bugs.</li>
-                <li>Mobile sidebar overlay required CSS + JS co-ordination to avoid z-index conflicts with modals.</li>
-              </ul>
-            </div>
-            <div>
-              <h4 style="font-weight:700;color:var(--navy);margin-bottom:8px;font-size:.9rem">📚 Lessons Learned</h4>
-              <ul style="list-style:disc;padding-left:18px;color:var(--gray-600);font-size:.875rem;line-height:1.8">
-                <li>Separating concerns into modules (api / validation / search / dom) drastically reduces debugging time.</li>
-                <li><code>async/await</code> with <code>try/catch</code> at every API call boundary ensures graceful failure handling.</li>
-                <li>Live validation on <code>input</code> + <code>blur</code> improves UX vs validating only on submit.</li>
-                <li>CSS custom properties (variables) make theming and color consistency trivial to maintain.</li>
-                <li>Optimistic UI updates (updating local state before API confirmation) make the app feel much faster.</li>
-              </ul>
-
-              <h4 style="font-weight:700;color:var(--navy);margin-bottom:8px;margin-top:16px;font-size:.9rem">🚀 Future Enhancements</h4>
-              <ul style="list-style:disc;padding-left:18px;color:var(--gray-600);font-size:.875rem;line-height:1.8">
-                <li>Real backend (Node.js + Express + PostgreSQL) for actual data persistence.</li>
-                <li>Email confirmation sent to participants on registration.</li>
-                <li>QR code generation for event check-in.</li>
-                <li>Export participant list to CSV / PDF.</li>
-                <li>Admin login with JWT authentication.</li>
-                <li>Pagination or infinite scroll for large participant lists.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ══════════════════════════════════════
          PAGE: ADMIN — LOGIN
@@ -373,7 +271,7 @@
 </div><!-- /app-layout -->
 
 <!-- ═══════════════════════════════════════════════
-     EDIT MODAL — Khon Davy (PUT)
+     EDIT MODAL
      ═══════════════════════════════════════════════ -->
 <div class="modal-overlay" id="edit-overlay">
   <div class="modal">
@@ -503,7 +401,7 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     DELETE CONFIRM MODAL — Yorn Rothana (DELETE)
+     DELETE CONFIRM MODAL
      ═══════════════════════════════════════════════ -->
 <div class="modal-overlay" id="delete-overlay">
   <div class="modal" style="max-width:400px">
@@ -540,7 +438,7 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     ADD PARTICIPANT MODAL — Tan Lydana (POST)
+     ADD PARTICIPANT MODAL
      ═══════════════════════════════════════════════ -->
 <div class="modal-overlay" id="add-overlay">
   <div class="modal">

@@ -14,7 +14,7 @@ const EVENTS = [
     id: "evt-tech-summit",
     title: "AUPP Tech Summit 2026",
     date: "2026-05-08",
-    location: "Innovation Hall",
+    location: "ATC Hall",
     seats: 120,
     description: "Talks and demos on AI, web engineering, and campus innovation.",
   },
@@ -22,15 +22,15 @@ const EVENTS = [
     id: "evt-career-fair",
     title: "Career Networking Fair",
     date: "2026-05-20",
-    location: "Student Center",
+    location: "Eagle Nest",
     seats: 90,
     description: "Meet recruiters, alumni, and industry mentors across faculties.",
   },
   {
     id: "evt-design-lab",
-    title: "Product Design Demonstation",
+    title: "Product Design Workshop",
     date: "2026-06-03",
-    location: "Media Lab",
+    location: "Lecture Hall C2",
     seats: 70,
     description: "Hands-on workshop for prototyping and UI design collaboration.",
   },
@@ -38,21 +38,39 @@ const EVENTS = [
     id: "evt-startup-night",
     title: "Startup Pitch Night",
     date: "2026-06-15",
-    location: "Auditorium",
+    location: "Lecture Hall B1",
     seats: 100,
     description: "Student teams pitch startup ideas to judges and invited guests.",
   },
+  {
+    id: "evt-hackathon",
+    title: "Campus Hackathon",
+    date: "2026-06-25",
+    location: "Innovation Lab",
+    seats: 80,
+    description: "Collaborative coding event focused on solving problems through rapid prototyping.",
+  },
+  {
+    id: "evt-ai-workshop",
+    title: "AI Learning Workshop",
+    date: "2026-07-05",
+    location: "Lecture Hall A1",
+    seats: 60,
+    description: "Interactive session exploring machine learning basics and practical AI applications.",
+  }
 ];
 
 const STORAGE_KEY = "aupp.registrations.v2";
 const USER_EMAIL_KEY = "aupp.currentUserEmail.v2";
 const ADMIN_AUTH_KEY = "aupp.admin.auth.v1";
 const ENV_PATH = ".env";
+const ADMIN_CONFIG_JSON_PATH = "admin.config.json";
 
 const adminCredentials = {
-  email: "staff@aupp.edu.kh",
-  password: "staff123",
+  email: "",
+  password: "",
 };
+let adminCredentialsLoaded = false;
 
 const ROUTE_TO_SECTION = {
   "#/user/events": "user-events",
@@ -79,6 +97,7 @@ const statMy = document.getElementById("stat-faculties");
 
 const myRegTbody = document.getElementById("my-reg-tbody");
 const myEmailLabel = document.getElementById("my-email-label");
+const myRegAlert = document.getElementById("reg-alert");
 
 const adminTbody = document.getElementById("admin-tbody");
 const adminAlert = document.getElementById("admin-alert");
@@ -146,20 +165,38 @@ function parseEnvText(text) {
 }
 
 async function loadAdminCredentialsFromEnv() {
-  try {
-    const response = await fetch(ENV_PATH, { cache: "no-store" });
-    if (!response.ok) return;
-    const text = await response.text();
-    const env = parseEnvText(text);
+  const candidatePaths = [ENV_PATH, `./${ENV_PATH}`, `/${ENV_PATH}`];
 
-    if (env.ADMIN_EMAIL) {
-      adminCredentials.email = env.ADMIN_EMAIL.trim().toLowerCase();
-    }
-    if (env.ADMIN_PASSWORD) {
-      adminCredentials.password = env.ADMIN_PASSWORD;
+  const applyCredentials = (emailValue, passwordValue) => {
+    const envEmail = String(emailValue || "").trim().toLowerCase();
+    const envPassword = String(passwordValue || "").trim();
+    if (!envEmail || !envPassword) return false;
+    adminCredentials.email = envEmail;
+    adminCredentials.password = envPassword;
+    adminCredentialsLoaded = true;
+    return true;
+  };
+
+  try {
+    for (const path of candidatePaths) {
+      const response = await fetch(path, { cache: "no-store" });
+      if (!response.ok) continue;
+
+      const text = await response.text();
+      const env = parseEnvText(text);
+      if (applyCredentials(env.ADMIN_EMAIL, env.ADMIN_PASSWORD)) return;
     }
   } catch {
-    // Fallback to default credentials if .env is not available
+    // Try JSON fallback below.
+  }
+
+  try {
+    const response = await fetch(ADMIN_CONFIG_JSON_PATH, { cache: "no-store" });
+    if (!response.ok) return;
+    const json = await response.json();
+    applyCredentials(json.ADMIN_EMAIL, json.ADMIN_PASSWORD);
+  } catch {
+    // Keep credentials unloaded; login will show a configuration warning.
   }
 }
 
@@ -366,10 +403,10 @@ function renderEventCards() {
         <h3>${escapeHtml(event.title)}</h3>
         <span class="badge-faculty">${count}/${event.seats}</span>
       </div>
-      <p class="event-card-desc">${escapeHtml(event.description)}</p>
+      <p class="event-card-desc">${escapeHtml(event.description)}</p><br/>
       <div class="event-card-meta">
-        <span>${formatDate(event.date)}</span>
-        <span>${escapeHtml(event.location)}</span>br
+        <span>${formatDate(event.date)}</span><br/>
+        <span>${escapeHtml(event.location)}</span><br/>
         <span>${available} seats left</span>
       </div>
       <button class="btn btn-primary btn-sm" data-event-register="${event.id}">Register</button>
@@ -431,11 +468,11 @@ function renderMyRegistrations() {
 
   myRegTbody.innerHTML = "";
   if (!hasUser) {
-    myRegTbody.innerHTML = '<tr><td colspan="5" class="text-center">Register first to see your events here.</td></tr>';
+    myRegTbody.innerHTML = '<tr><td colspan="6" class="text-center">Register first to see your events here.</td></tr>';
     return;
   }
   if (mine.length === 0) {
-    myRegTbody.innerHTML = '<tr><td colspan="5" class="text-center">No registrations found for this email.</td></tr>';
+    myRegTbody.innerHTML = '<tr><td colspan="6" class="text-center">No registrations found for this email.</td></tr>';
     return;
   }
 
@@ -446,6 +483,9 @@ function renderMyRegistrations() {
         ? '<span class="status-badge status-noshow">No-show</span>'
         : '<span class="status-badge status-registered">Registered</span>';
       const checkText = r.checkedIn ? "Checked In" : "Pending";
+      const actionButton = r.checkedIn
+        ? '<button class="btn btn-ghost btn-sm" type="button" disabled title="Checked-in registrations cannot be canceled">Locked</button>'
+        : `<button class="btn btn-danger btn-sm" type="button" data-my-action="unregister" data-id="${r.id}">Unregister</button>`;
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${escapeHtml(r.eventName)}</td>
@@ -453,9 +493,32 @@ function renderMyRegistrations() {
         <td>${escapeHtml(checkText)}</td>
         <td>${escapeHtml(r.email)}</td>
         <td>${escapeHtml(formatDateTime(r.registeredAt))}</td>
+        <td>${actionButton}</td>
       `;
       myRegTbody.appendChild(row);
     });
+}
+
+function unregisterMyRegistration(id) {
+  const row = allRegistrations.find(r => r.id === id);
+  if (!row) return;
+
+  if (row.email.toLowerCase() !== currentUserEmail) {
+    showAlert(myRegAlert, "You can only manage your own registrations.", "error", 2200);
+    return;
+  }
+
+  if (row.checkedIn) {
+    showAlert(myRegAlert, "Checked-in registrations cannot be canceled.", "error", 2200);
+    return;
+  }
+
+  const confirmed = window.confirm(`Unregister from ${row.eventName}?`);
+  if (!confirmed) return;
+
+  allRegistrations = allRegistrations.filter(r => r.id !== id);
+  rerenderAll();
+  showAlert(myRegAlert, `You have unregistered from ${row.eventName}.`, "success", 2200);
 }
 
 function getFilteredAdminRows() {
@@ -712,6 +775,12 @@ function bindEvents() {
     openUserRegisterModal(btn.dataset.eventRegister);
   });
 
+  myRegTbody?.addEventListener("click", event => {
+    const btn = event.target.closest("[data-my-action='unregister']");
+    if (!btn) return;
+    unregisterMyRegistration(Number(btn.dataset.id));
+  });
+
   userRegisterClose?.addEventListener("click", () => closeModal(userRegisterOverlay));
   userRegisterCancel?.addEventListener("click", () => closeModal(userRegisterOverlay));
 
@@ -764,6 +833,11 @@ function bindEvents() {
       const formData = new FormData(adminLoginForm);
       const email = String(formData.get("email") || "").trim().toLowerCase();
       const password = String(formData.get("password") || "").trim();
+
+      if (!adminCredentialsLoaded) {
+        showAlert(adminLoginAlert, "Admin credentials not loaded. Use .env or admin.config.json, then reload.", "error", 3200);
+        return;
+      }
 
       if (email === adminCredentials.email && password === adminCredentials.password) {
         isAdminAuthenticated = true;
