@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUPP Event Registration System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-title">AUPP Event<br>Registration</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label" data-nav-role="participant">Participant</div>
+
+      <div class="nav-item active" data-section="user-events" data-route="#/user/events" data-nav-role="participant">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        <span class="nav-label">All Events</span>
+      </div>
+
+      <div class="nav-item" data-section="user-my" data-route="#/user/my-registrations" data-nav-role="participant">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span class="nav-label">My Registrations</span>
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px" data-nav-role="admin">Admin</div>
+
+      <div class="nav-item" data-section="admin-registrations" data-route="#/admin/participants" data-nav-role="admin">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        <span class="nav-label">Participants Management</span>
+        <span class="badge" id="admin-badge">0</span>
+      </div>
+    </nav>
+
+  </aside>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════ -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div>
+        <div class="topbar-title" id="topbar-title">All Events</div>
+        <div class="topbar-subtitle">Online Event Registration System</div>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════
+            PAGE: USER — EVENTS
+         ══════════════════════════════════════ -->
+          <section class="page-section active" id="user-events">
+
+
+      <div class="two-col">
+
+        <!-- Event List -->
+        <div class="panel">
+          <div class="panel-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.5">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span class="panel-title">Available Events</span>
+          </div>
+          <div class="panel-body">
+            <div class="alert" id="reg-alert"></div>
+            <div id="event-cards" class="event-grid">
+              <p class="text-muted text-sm">Loading events…</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats + participant list -->
+        <div>
+          <div class="stats-grid" style="grid-template-columns:1fr 1fr 1fr">
+            <div class="stat-card">
+              <div class="stat-label">Total Registrations</div>
+              <div class="stat-value" id="stat-total">—</div>
+            </div>
+            <div class="stat-card accent">
+              <div class="stat-label">Open Events</div>
+              <div class="stat-value" id="stat-spots">—</div>
+            </div>
+            <div class="stat-card success">
+              <div class="stat-label">My Registrations</div>
+              <div class="stat-value" id="stat-faculties">—</div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              </svg>
+              <span class="panel-title">Recent Registrations</span>
+            </div>
+            <div class="panel-body">
+              <div id="user-reg-cards">
+                <p class="text-muted text-sm">Loading…</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         PAGE: USER — MY REGISTRATIONS
+         ══════════════════════════════════════ -->
+    <section class="page-section" id="user-my">
+      <div class="panel">
+        <div class="panel-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="panel-title">My Event Registrations</span>
+          <span class="text-muted text-sm" id="my-email-label">No user selected</span>
+        </div>
+        <div class="panel-body">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Status</th>
+                  <th>Check-in</th>
+                  <th>Email</th>
+                  <th>Registered At</th>
+                </tr>
+              </thead>
+              <tbody id="my-reg-tbody">
+                <tr class="loading-row"><td colspan="5">Loading participants…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         PAGE: ADMIN — DASHBOARD
+         ══════════════════════════════════════ -->
+    <section class="page-section" id="admin-dashboard">
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:24px">
+        <div class="stat-card">
+          <div class="stat-label">Total Registered</div>
+          <div class="stat-value" id="stat-total2">—</div>
+        </div>
+        <div class="stat-card accent">
+          <div class="stat-label">Spots Remaining</div>
+          <div class="stat-value" id="stat-spots2">—</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-label">Faculties Represented</div>
+          <div class="stat-value" id="stat-faculties2">—</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Team Responsibilities</span>
+          </div>
+          <div class="panel-body">
+            <table>
+              <thead>
+                <tr><th>Member</th><th>Module</th><th>Responsibility</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Kim Soklin</strong></td><td><span class="badge-faculty">GET</span></td><td>Fetch &amp; render participants</td></tr>
+                <tr><td><strong>Tan Lydana</strong></td><td><span class="badge-faculty">POST</span></td><td>Create registration form</td></tr>
+                <tr><td><strong>Meas Marady</strong></td><td><span class="badge-faculty">Validation</span></td><td>Client-side form validation</td></tr>
+                <tr><td><strong>Khon Davy</strong></td><td><span class="badge-faculty">PUT</span></td><td>Edit registration records</td></tr>
+                <tr><td><strong>Yorn Rothana</strong></td><td><span class="badge-faculty">DELETE</span></td><td>Delete with confirm modal</td></tr>
+                <tr><td><strong>Horn Narak</strong></td><td><span class="badge-faculty">Search</span></td><td>Live search &amp; faculty filter</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Project Architecture</span>
+          </div>
+          <div class="panel-body">
+            <table>
+              <thead><tr><th>File</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td><code>index.html</code></td><td>Single-page app shell</td></tr>
+                <tr><td><code>css/style.css</code></td><td>Global styles &amp; design tokens</td></tr>
+                <tr><td><code>js/main.js</code></td><td>App entry, navigation, event binding</td></tr>
+                <tr><td><code>js/modules/api.js</code></td><td>All fetch() API calls (CRUD)</td></tr>
+                <tr><td><code>js/modules/validation.js</code></td><td>Field rules &amp; live validation</td></tr>
+                <tr><td><code>js/modules/search.js</code></td><td>Filter &amp; search logic</td></tr>
+                <tr><td><code>js/modules/dom.js</code></td><td>Table render, modals, alerts</td></tr>
+                <tr><td><code>tests/test-cases.html</code></td><td>Manual test case sheet</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel mt-6">
+        <div class="panel-header">
+          <span class="panel-title">Challenges, Lessons &amp; Future Enhancements</span>
+        </div>
+        <div class="panel-body">
+          <div class="two-col">
+            <div>
+              <h4 style="font-weight:700;color:var(--navy);margin-bottom:8px;font-size:.9rem">⚡ Challenges Faced</h4>
+              <ul style="list-style:disc;padding-left:18px;color:var(--gray-600);font-size:.875rem;line-height:1.8">
+                <li>JSONPlaceholder only simulates writes — data isn't truly persisted, requiring optimistic UI updates to stay in sync.</li>
+                <li>Coordinating 6 separate JS modules without a bundler required disciplined use of ES6 <code>import/export</code>.</li>
+                <li>Email validation had to balance strictness (must end in <code>.edu.kh</code>) with flexibility for varied AUPP email formats.</li>
+                <li>Modal state (editing ID, deleting ID) needed careful management to prevent stale-closure bugs.</li>
+                <li>Mobile sidebar overlay required CSS + JS co-ordination to avoid z-index conflicts with modals.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="font-weight:700;color:var(--navy);margin-bottom:8px;font-size:.9rem">📚 Lessons Learned</h4>
+              <ul style="list-style:disc;padding-left:18px;color:var(--gray-600);font-size:.875rem;line-height:1.8">
+                <li>Separating concerns into modules (api / validation / search / dom) drastically reduces debugging time.</li>
+                <li><code>async/await</code> with <code>try/catch</code> at every API call boundary ensures graceful failure handling.</li>
+                <li>Live validation on <code>input</code> + <code>blur</code> improves UX vs validating only on submit.</li>
+                <li>CSS custom properties (variables) make theming and color consistency trivial to maintain.</li>
+                <li>Optimistic UI updates (updating local state before API confirmation) make the app feel much faster.</li>
+              </ul>
+
+              <h4 style="font-weight:700;color:var(--navy);margin-bottom:8px;margin-top:16px;font-size:.9rem">🚀 Future Enhancements</h4>
+              <ul style="list-style:disc;padding-left:18px;color:var(--gray-600);font-size:.875rem;line-height:1.8">
+                <li>Real backend (Node.js + Express + PostgreSQL) for actual data persistence.</li>
+                <li>Email confirmation sent to participants on registration.</li>
+                <li>QR code generation for event check-in.</li>
+                <li>Export participant list to CSV / PDF.</li>
+                <li>Admin login with JWT authentication.</li>
+                <li>Pagination or infinite scroll for large participant lists.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         PAGE: ADMIN — LOGIN
+         ══════════════════════════════════════ -->
+    <section class="page-section" id="admin-login">
+      <div class="panel auth-panel">
+        <div class="panel-header">
+          <span class="panel-title">Staff Login</span>
+        </div>
+        <div class="panel-body">
+          <div class="alert" id="admin-login-alert"></div>
+          <form id="admin-login-form" novalidate>
+            <div class="form-grid full">
+              <div class="form-group">
+                <label>Staff Email</label>
+                <input type="email" name="email" placeholder="Enter staff email" autocomplete="email" />
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter password" autocomplete="current-password" />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full mt-4">Login to Admin</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         PAGE: ADMIN — ALL REGISTRATIONS
+         ══════════════════════════════════════ -->
+    <section class="page-section" id="admin-registrations">
+
+      <div class="panel">
+        <div class="panel-header">
+          <!-- Search bar -->
+          <div class="search-bar" style="flex:1">
+            <div class="search-input-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input type="text" id="admin-search" placeholder="Search by name or email…" />
+            </div>
+            <select class="filter-select" id="admin-fac-filter">
+              <option value="">All Faculties</option>
+            </select>
+            <select class="filter-select" id="admin-event-filter">
+              <option value="">All Events</option>
+            </select>
+          </div>
+          <div class="flex gap-2 items-center">
+            <button class="btn btn-ghost btn-sm" id="refresh-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+              Refresh
+            </button>
+            <button class="btn btn-primary btn-sm" id="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Participant
+            </button>
+            <button class="btn btn-outline btn-sm" id="admin-logout-btn">Logout</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert mt-4" id="admin-alert"></div>
+
+      <div class="panel mt-4">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Event</th>
+                <th>Phone</th>
+                <th>Faculty</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Check-in</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tbody">
+              <tr class="loading-row"><td colspan="9">Loading participants…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
+
+<!-- ═══════════════════════════════════════════════
+     EDIT MODAL — Khon Davy (PUT)
+     ═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="edit-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.5">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      <span class="modal-title">Edit Registration</span>
+      <button class="btn btn-ghost btn-sm" id="edit-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="alert" id="edit-alert"></div>
+      <form id="edit-form" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Given Name <span class="req">*</span></label>
+            <input type="text" name="givenName" />
+            <span class="error-msg" data-error="givenName"></span>
+          </div>
+          <div class="form-group">
+            <label>Family Name <span class="req">*</span></label>
+            <input type="text" name="familyName" />
+            <span class="error-msg" data-error="familyName"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>School Email <span class="req">*</span></label>
+            <input type="email" name="email" />
+            <span class="error-msg" data-error="email"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>Event <span class="req">*</span></label>
+            <select name="eventId"><option value="">— Select Event —</option></select>
+            <span class="error-msg" data-error="eventId"></span>
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="req">*</span></label>
+            <input type="tel" name="phone" />
+            <span class="error-msg" data-error="phone"></span>
+          </div>
+          <div class="form-group">
+            <label>Year <span class="req">*</span></label>
+            <select name="year"><option value="">— Select —</option></select>
+            <span class="error-msg" data-error="year"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>Faculty <span class="req">*</span></label>
+            <select name="faculty"><option value="">— Select —</option></select>
+            <span class="error-msg" data-error="faculty"></span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="edit-cancel">Cancel</button>
+      <button class="btn btn-primary" onclick="document.getElementById('edit-form').requestSubmit()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     USER REGISTER MODAL
+     ═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="user-register-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.5">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      <span class="modal-title">Register for Event</span>
+      <button class="btn btn-ghost btn-sm" id="user-register-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="alert" id="user-register-alert"></div>
+      <p class="text-sm" style="margin-bottom:14px"><strong>Selected Event:</strong> <span id="user-selected-event">—</span></p>
+      <form id="user-register-form" novalidate>
+        <input type="hidden" name="eventId" value="" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Given Name <span class="req">*</span></label>
+            <input type="text" name="givenName" placeholder="e.g. Dara" autocomplete="given-name" />
+            <span class="error-msg" data-error="givenName"></span>
+          </div>
+          <div class="form-group">
+            <label>Family Name <span class="req">*</span></label>
+            <input type="text" name="familyName" placeholder="e.g. Hak" autocomplete="family-name" />
+            <span class="error-msg" data-error="familyName"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>School Email <span class="req">*</span></label>
+            <input type="email" name="email" placeholder="yourname@aupp.edu.kh" autocomplete="email" />
+            <span class="error-msg" data-error="email"></span>
+          </div>
+          <div class="form-group">
+            <label>Phone Number <span class="req">*</span></label>
+            <input type="tel" name="phone" placeholder="+855 12 345 678" autocomplete="tel" />
+            <span class="error-msg" data-error="phone"></span>
+          </div>
+          <div class="form-group">
+            <label>Year of Study <span class="req">*</span></label>
+            <select name="year">
+              <option value="">Select Year</option>
+            </select>
+            <span class="error-msg" data-error="year"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>Faculty <span class="req">*</span></label>
+            <select name="faculty">
+              <option value="">Select Faculty</option>
+            </select>
+            <span class="error-msg" data-error="faculty"></span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="user-register-cancel">Cancel</button>
+      <button class="btn btn-primary" onclick="document.getElementById('user-register-form').requestSubmit()">Confirm Registration</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     DELETE CONFIRM MODAL — Yorn Rothana (DELETE)
+     ═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="delete-overlay">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <span class="modal-title">Confirm Deletion</span>
+      <button class="btn btn-ghost btn-sm" id="delete-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14H6L5 6"/>
+          <path d="M10 11v6"/><path d="M14 11v6"/>
+          <path d="M9 6V4h6v2"/>
+        </svg>
+      </div>
+      <div class="confirm-text">
+        <h3>Delete Registration?</h3>
+        <p>Are you sure you want to remove <strong id="delete-name"></strong> from the event? This action cannot be undone.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="delete-cancel-btn">Cancel</button>
+      <button class="btn btn-danger" id="delete-confirm-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash">
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+          <path d="M3 6h18"/>
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        </svg>
+        Yes, Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ADD PARTICIPANT MODAL — Tan Lydana (POST)
+     ═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="add-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      <span class="modal-title">Add New Participant</span>
+      <button class="btn btn-ghost btn-sm" id="add-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="alert" id="add-alert"></div>
+      <form id="add-form" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Given Name <span class="req">*</span></label>
+            <input type="text" name="givenName" placeholder="e.g. Dara" />
+            <span class="error-msg" data-error="givenName"></span>
+          </div>
+          <div class="form-group">
+            <label>Family Name <span class="req">*</span></label>
+            <input type="text" name="familyName" placeholder="e.g. Hak" />
+            <span class="error-msg" data-error="familyName"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>School Email <span class="req">*</span></label>
+            <input type="email" name="email" placeholder="yourname@aupp.edu.kh" />
+            <span class="error-msg" data-error="email"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>Event <span class="req">*</span></label>
+            <select name="eventId"><option value="">Select Event</option></select>
+            <span class="error-msg" data-error="eventId"></span>
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="req">*</span></label>
+            <input type="tel" name="phone" placeholder="+855 12 345 678" />
+            <span class="error-msg" data-error="phone"></span>
+          </div>
+          <div class="form-group">
+            <label>Year <span class="req">*</span></label>
+            <select name="year"><option value="">Select</option></select>
+            <span class="error-msg" data-error="year"></span>
+          </div>
+          <div class="form-group span-2">
+            <label>Faculty <span class="req">*</span></label>
+            <select name="faculty"><option value="">Select</option></select>
+            <span class="error-msg" data-error="faculty"></span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="add-cancel">Cancel</button>
+      <button class="btn btn-primary" onclick="document.getElementById('add-form').requestSubmit()">
+        Add Participant
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+
+<!-- Extra: sync admin dashboard stats -->
+<script type="module">
+import { updateStatCards } from "./js/modules/dom.js";
+
+// Mirror stat cards to admin dashboard duplicates
+const observer = new MutationObserver(() => {
+  ["total","spots","faculties"].forEach(k => {
+    const src = document.getElementById(`stat-${k}`);
+    const dst = document.getElementById(`stat-${k}2`);
+    if (src && dst) dst.textContent = src.textContent;
+  });
+});
+["stat-total","stat-spots","stat-faculties"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el, { childList: true, characterData: true, subtree: true });
+});
+</script>
+
+</body>
+</html>
