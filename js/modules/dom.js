@@ -1,4 +1,5 @@
 /**
+ * Rothana
  * dom.js — Shared DOM utilities used across all modules.
  * Handles table rendering, modal open/close, alerts, stat card updates.
  */
