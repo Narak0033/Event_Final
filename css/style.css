@@ -3,7 +3,9 @@
    Colors: #003070 (navy), #AD0000 (crimson), #FFFFFF (white)
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* In CSS */
+/* In CSS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
 
 :root {
   --navy:      #003070;
@@ -191,7 +193,7 @@ ul { list-style: none; }
   font-size: .78rem;
   color: var(--gray-400);
   font-style: italic;
-  font-family: 'Inter', serif;
+  font-family: 'Playfair Display', serif;
 }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
 
