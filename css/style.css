@@ -3,7 +3,7 @@
    Colors: #003070 (navy), #AD0000 (crimson), #FFFFFF (white)
 */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --navy:      #003070;
@@ -32,7 +32,7 @@
 html { font-size: 15px; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   background: var(--gray-50);
   color: var(--gray-800);
   min-height: 100vh;
@@ -67,10 +67,11 @@ ul { list-style: none; }
   border-bottom: 1px solid rgba(255,255,255,.12);
 }
 .sidebar-logo .logo-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.15rem;
   line-height: 1.3;
   color: var(--white);
+  
 }
 .sidebar-logo .logo-sub {
   font-size: .72rem;
@@ -181,7 +182,7 @@ ul { list-style: none; }
   gap: 16px;
 }
 .topbar-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
   color: var(--navy);
   flex: 1;
@@ -190,7 +191,7 @@ ul { list-style: none; }
   font-size: .78rem;
   color: var(--gray-400);
   font-style: italic;
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Inter', serif;
 }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
 
@@ -245,7 +246,7 @@ ul { list-style: none; }
   margin-bottom: 8px;
 }
 .stat-value {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 2rem;
   color: var(--navy);
   line-height: 1;
@@ -296,7 +297,7 @@ input, select, textarea {
   border: 1.5px solid var(--gray-200);
   border-radius: 6px;
   padding: 9px 12px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: .9rem;
   color: var(--gray-800);
   background: var(--white);
@@ -328,7 +329,7 @@ select { cursor: pointer; }
   gap: 7px;
   padding: 9px 18px;
   border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: .875rem;
   font-weight: 600;
   cursor: pointer;
@@ -491,7 +492,7 @@ tr:hover td { background: var(--navy-light); }
   gap: 12px;
 }
 .modal-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   color: var(--navy);
   flex: 1;
@@ -518,7 +519,7 @@ tr:hover td { background: var(--navy-light); }
 }
 .confirm-text { text-align: center; }
 .confirm-text h3 {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.05rem;
   color: var(--navy);
   margin-bottom: 6px;
@@ -585,7 +586,7 @@ tr:hover td { background: var(--navy-light); }
   background: rgba(255,255,255,.04);
 }
 .hero-banner h1 {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.7rem;
   line-height: 1.25;
   margin-bottom: 8px;
@@ -764,7 +765,7 @@ tr:hover td { background: var(--navy-light); }
   margin: 0 auto 16px;
 }
 .success-step h3 {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.3rem;
   color: var(--navy);
   margin-bottom: 8px;
