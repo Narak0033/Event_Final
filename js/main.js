@@ -76,7 +76,7 @@ const ROUTE_TO_SECTION = {
   "#/admin/participants": "admin-registrations",
 };
 
-// ── DOM refs ────────────────────────────────────────────────
+// DOM refs
 const navItems           = document.querySelectorAll(".nav-item");
 const pageSections       = document.querySelectorAll(".page-section");
 const topbarTitle        = document.getElementById("topbar-title");
@@ -140,7 +140,7 @@ const deleteCancelBtn   = document.getElementById("delete-cancel-btn");
 const deleteCloseBtn    = document.getElementById("delete-close");
 const deleteNameSpan    = document.getElementById("delete-name");
 
-// ── State ───────────────────────────────────────────────────
+// State 
 let allRegistrations   = [];
 let currentUserEmail   = localStorage.getItem(USER_EMAIL_KEY) || "";
 let editingId          = null;
@@ -150,7 +150,7 @@ let adminMajor         = "";
 let adminEvent         = "";
 let isAdminAuthenticated = localStorage.getItem(ADMIN_AUTH_KEY) === "1";
 
-// ── Env / credentials ───────────────────────────────────────
+// Env / credentials
 function parseEnvText(text) {
   const env = {};
   text.split(/\r?\n/).forEach(line => {
@@ -194,7 +194,7 @@ async function loadAdminCredentialsFromEnv() {
   } catch { /* credentials stay unloaded */ }
 }
 
-// ── Normalizers ─────────────────────────────────────────────
+// Normalizers 
 function normalizeMajorName(value) {
   const raw = String(value || "").trim();
   if (!raw) return MAJORS[0];
@@ -212,7 +212,7 @@ function normalizeYearName(value) {
   return YEARS[0];
 }
 
-// ── Storage ─────────────────────────────────────────────────
+// Storage 
 function saveRegistrations() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(allRegistrations));
 }
@@ -236,7 +236,7 @@ function loadRegistrations() {
   } catch { return []; }
 }
 
-// ── Helpers ──────────────────────────────────────────────────
+// Helpers 
 function eventById(eventId) {
   return EVENTS.find(e => e.id === eventId);
 }
@@ -262,7 +262,7 @@ function escapeHtml(str) {
     .replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-// ── Routing & sections ───────────────────────────────────────
+// Routing & sections 
 function showSection(sectionId) {
   // page sections
   pageSections.forEach(s => s.classList.toggle("active", s.id === sectionId));
@@ -340,7 +340,7 @@ function routeTo(sectionId) {
   if (targetRoute) window.location.hash = targetRoute;
 }
 
-// ── Build registration object ────────────────────────────────
+// Build registration object 
 function buildRegistration(data, eventId, existingId = null) {
   const event = eventById(eventId);
   return {
@@ -385,7 +385,7 @@ function validateWithEvent(form, data) {
   return { valid: valid && !errors.eventId };
 }
 
-// ── Stats ────────────────────────────────────────────────────
+// Stats
 function statsForEvent(eventId) {
   const count      = allRegistrations.filter(r => r.eventId === eventId).length;
   const event      = eventById(eventId);
@@ -393,7 +393,7 @@ function statsForEvent(eventId) {
   return { count, available: Math.max(0, totalSeats - count) };
 }
 
-// ── Render: event cards ──────────────────────────────────────
+// Render: event cards 
 function renderEventCards() {
   if (!eventCards) return;
   eventCards.innerHTML = "";
@@ -418,7 +418,7 @@ function renderEventCards() {
   });
 }
 
-// ── Render: recent cards ─────────────────────────────────────
+// Render: recent cards 
 function renderRecentCards() {
   if (!userRegCards) return;
   const recent = [...allRegistrations]
@@ -445,7 +445,7 @@ function renderRecentCards() {
   });
 }
 
-// ── Render: stats ────────────────────────────────────────────
+// Render: stats 
 function renderStats() {
   if (statTotal) statTotal.textContent = String(allRegistrations.length);
   if (statSpots) statSpots.textContent = String(EVENTS.length);
@@ -461,7 +461,7 @@ function renderStats() {
   if (adminBadge2) adminBadge2.textContent = String(allRegistrations.length);
 }
 
-// ── Render: my registrations table ──────────────────────────
+//  Render: my registrations table
 function renderMyRegistrations() {
   if (!myRegTbody) return;
   const hasUser = Boolean(currentUserEmail);
@@ -521,7 +521,7 @@ function withdrawMyRegistration(id) {
   showAlert(myRegAlert, `You have withdrawn from ${row.eventName}.`, "success", 2200);
 }
 
-// ── Render: admin table ──────────────────────────────────────
+// Render: admin table
 function getFilteredAdminRows() {
   const q = adminQuery.trim().toLowerCase();
   return allRegistrations.filter(r => {
@@ -588,7 +588,7 @@ function renderAdminTable() {
   }
 }
 
-// ── Re-render everything ─────────────────────────────────────
+// Re-render everything
 function rerenderAll() {
   saveRegistrations();
   renderEventCards();
@@ -598,7 +598,7 @@ function rerenderAll() {
   renderAdminTable();
 }
 
-// ── Modals ───────────────────────────────────────────────────
+// Modals
 function openUserRegisterModal(eventId) {
   const event = eventById(eventId);
   if (!event || !userRegisterForm || !userRegisterOverlay) return;
@@ -651,7 +651,7 @@ function closeAllActionMenus() {
   document.querySelectorAll(".action-menu-list.open").forEach(m => m.classList.remove("open"));
 }
 
-// ── Populate dropdowns ───────────────────────────────────────
+// Populate dropdowns
 function populateMajorDropdowns() {
   document.querySelectorAll("select[name='major']").forEach(sel => {
     MAJORS.forEach(m => {
@@ -696,7 +696,7 @@ function populateEventDropdowns() {
   }
 }
 
-// ── Seed data ────────────────────────────────────────────────
+// Seed data
 async function seedIfNeeded() {
   allRegistrations = loadRegistrations();
   if (allRegistrations.length > 0) return;
@@ -723,16 +723,16 @@ async function seedIfNeeded() {
   } catch { allRegistrations = []; }
 }
 
-// ── Bind all events ──────────────────────────────────────────
+// Bind all events
 function bindEvents() {
 
-  // ── Hamburger toggle ───────────────────────────────────────
+  // Hamburger toggle
   hamburgerBtn?.addEventListener("click", e => {
     e.stopPropagation();
     navDropdown?.classList.toggle("open");
   });
 
-  // ── Dropdown nav item clicks ───────────────────────────────
+  // Dropdown nav item clicks
   document.querySelectorAll("#nav-dropdown .nav-dropdown-item").forEach(item => {
     item.addEventListener("click", () => {
       let route = item.dataset.route;
@@ -742,7 +742,7 @@ function bindEvents() {
     });
   });
 
-  // ── Close dropdown when clicking outside ──────────────────
+  // Close dropdown when clicking outside
   document.addEventListener("click", e => {
     if (navDropdown && !navDropdown.contains(e.target) && e.target !== hamburgerBtn) {
       navDropdown.classList.remove("open");
@@ -751,22 +751,22 @@ function bindEvents() {
     if (!e.target.closest(".action-menu")) closeAllActionMenus();
   });
 
-  // ── Hash routing ───────────────────────────────────────────
+  // Hash routing
   window.addEventListener("hashchange", applyRoute);
 
-  // ── Event card register buttons ────────────────────────────
+  // Event card register buttons
   eventCards?.addEventListener("click", e => {
     const btn = e.target.closest("[data-event-register]");
     if (btn) openUserRegisterModal(btn.dataset.eventRegister);
   });
 
-  // ── My registrations withdraw ──────────────────────────────
+  // My registrations withdraw
   myRegTbody?.addEventListener("click", e => {
     const btn = e.target.closest("[data-my-action='withdraw']");
     if (btn) withdrawMyRegistration(Number(btn.dataset.id));
   });
 
-  // ── User register modal ────────────────────────────────────
+  // User register modal
   userRegisterClose?.addEventListener("click",  () => closeModal(userRegisterOverlay));
   userRegisterCancel?.addEventListener("click", () => closeModal(userRegisterOverlay));
 
@@ -786,7 +786,7 @@ function bindEvents() {
     });
   }
 
-  // ── Admin filters ──────────────────────────────────────────
+  // Admin filters 
   adminSearchInput?.addEventListener("input",  () => { adminQuery   = adminSearchInput.value; renderAdminTable(); });
   adminMajorFilter?.addEventListener("change",   () => { adminMajor   = adminMajorFilter.value;   renderAdminTable(); });
   adminEventFilter?.addEventListener("change", () => { adminEvent   = adminEventFilter.value; renderAdminTable(); });
@@ -797,7 +797,7 @@ function bindEvents() {
     rerenderAll();
   });
 
-  // ── Admin login ────────────────────────────────────────────
+  // Admin login 
   if (adminLoginForm) {
     adminLoginForm.addEventListener("submit", e => {
       e.preventDefault();
@@ -820,14 +820,14 @@ function bindEvents() {
     });
   }
 
-  // ── Admin logout ───────────────────────────────────────────
+  // Admin logout 
   adminLogoutBtn?.addEventListener("click", () => {
     isAdminAuthenticated = false;
     localStorage.removeItem(ADMIN_AUTH_KEY);
     window.location.hash = "#/admin/login";
   });
 
-  // ── Add participant modal ──────────────────────────────────
+  // Add participant modal
   addBtn?.addEventListener("click", () => {
     addForm?.reset();
     clearValidation(addForm);
@@ -852,7 +852,7 @@ function bindEvents() {
     });
   }
 
-  // ── Edit modal ─────────────────────────────────────────────
+  // Edit modal
   editCloseBtn?.addEventListener("click",  () => closeModal(editOverlay));
   editCancelBtn?.addEventListener("click", () => closeModal(editOverlay));
 
@@ -878,7 +878,7 @@ function bindEvents() {
     });
   }
 
-  // ── Delete modal ───────────────────────────────────────────
+  //Delete modal 
   deleteCloseBtn?.addEventListener("click",  () => closeModal(deleteOverlay));
   deleteCancelBtn?.addEventListener("click", () => closeModal(deleteOverlay));
   deleteConfirmBtn?.addEventListener("click", () => {
@@ -890,7 +890,7 @@ function bindEvents() {
     deletingId = null;
   });
 
-  // ── Admin table action menus ───────────────────────────────
+  //Admin table action menus
   adminTbody?.addEventListener("click", e => {
     const toggleBtn = e.target.closest("[data-action-toggle]");
     if (toggleBtn) {
@@ -913,7 +913,7 @@ function bindEvents() {
   });
 }
 
-// ── Init ─────────────────────────────────────────────────────
+// Init
 async function init() {
   await loadAdminCredentialsFromEnv();
   populateMajorDropdowns();
