@@ -16,9 +16,6 @@
 
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-title">AUPP&nbsp;&nbsp;Event&nbsp;&nbsp;Registration</div>
-    </div>
 
     <nav class="sidebar-nav">
       <div class="nav-section-label" data-nav-role="participant">Participant</div>
@@ -67,20 +64,52 @@
        ═══════════════════════════════════════ -->
   <div class="main-content">
 
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-      <div>
-        <div class="topbar-title" id="topbar-title">All Events</div>
-        <div class="topbar-subtitle">Online Event Registration System</div>
-      </div>
-    </header>
+      <!-- TOPBAR -->
+    <header class="topbar" style="position:relative;">
+
+
+      <!--logo-->
+      <img src="assets/AUPP-Logo_-Vertical.webp" alt="AUPP Logo" style="height:44px; width:auto; margin-right:10px; object-fit:contain;" />
+
+        <div style="flex:1; text-align:center;">
+          <div class="topbar-title" id="topbar-title">All Events</div>
+          <div class="topbar-subtitle">Online Event Registration System</div>
+        </div>
+
+        <!-- Hamburger (participant only) -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+
+        <!-- Profile icon (always visible, always on the right) -->
+        <button class="profile-btn" id="profile-btn" aria-label="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </button>
+       
+        <!-- Dropdown nav (participant only) -->
+        <div class="nav-dropdown" id="nav-dropdown">
+          <button class="nav-dropdown-item active" data-section="user-events" data-route="#/user/events" data-nav-role="participant">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span class="dropdown-item-label">All Events</span>
+          </button>
+          <button class="nav-dropdown-item" data-section="user-my" data-route="#/user/my-registrations" data-nav-role="participant">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            </svg>
+            <span class="dropdown-item-label">My Registrations</span>
+          </button>
+        </div>
+      </header>
 
     <!-- ══════════════════════════════════════
             PAGE: USER — EVENTS

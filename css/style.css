@@ -51,18 +51,6 @@ ul { list-style: none; }
   min-height: 100vh;
 }
 
-/* ─── SIDEBAR ─────────────────────────────────────────────── */
-.sidebar {
-  width: var(--sidebar-w);
-  background: var(--navy);
-  color: var(--white);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  z-index: 100;
-  transition: transform var(--transition);
-}
 
 .sidebar-logo {
   padding: 24px 20px 20px;
@@ -153,6 +141,105 @@ ul { list-style: none; }
   padding: 0 5px;
 }
 
+  /* ─── HIDE SIDEBAR COMPLETELY ────────────────────────────── */
+  .sidebar {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+
+  /* ─── HAMBURGER BUTTON (top-right) ───────────────────────── */
+  .hamburger-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 8px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background var(--transition);
+    margin-left: auto;
+  }
+  .hamburger-btn:hover {
+    background: rgba(255,255,255,.15);
+  }
+
+  /* ─── DROPDOWN NAV BOX ────────────────────────────────────── */
+  .nav-dropdown {
+    position: absolute;
+    top: calc(var(--topbar-h) + 6px);
+    right: 16px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    min-width: 220px;
+    z-index: 300;
+    display: none;
+    padding: 8px;
+    animation: dropIn .15s ease;
+  }
+  .nav-dropdown.open {
+    display: block;
+  }
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ─── DROPDOWN ITEMS ──────────────────────────────────────── */
+  .nav-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--gray-800);
+    transition: background var(--transition);
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-dropdown-item:hover {
+    background: var(--navy-light);
+    color: var(--navy);
+  }
+  .nav-dropdown-item.active {
+    background: var(--navy-light);
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .nav-dropdown-item svg {
+    opacity: .7;
+    flex-shrink: 0;
+  }
+  .nav-dropdown-item.active svg {
+    opacity: 1;
+  }
+
+  /* ─── DROPDOWN DIVIDER ────────────────────────────────────── */
+  .nav-dropdown-divider {
+    border: none;
+    border-top: 1px solid var(--gray-100);
+    margin: 6px 0;
+  }
+
 .sidebar-footer {
   padding: 16px 20px;
   border-top: 1px solid rgba(255,255,255,.12);
@@ -161,19 +248,12 @@ ul { list-style: none; }
 }
 .sidebar-footer strong { display: block; color: rgba(255,255,255,.7); margin-bottom: 2px; }
 
-/* ─── MAIN CONTENT ────────────────────────────────────────── */
-.main-content {
-  margin-left: var(--sidebar-w);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+
 
 /* ─── TOPBAR ──────────────────────────────────────────────── */
 .topbar {
   height: var(--topbar-h);
-  background: var(--white);
+  background: var(--navy);
   border-bottom: 1px solid var(--gray-200);
   display: flex;
   align-items: center;
@@ -186,7 +266,9 @@ ul { list-style: none; }
 .topbar-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
-  color: var(--navy);
+  color: var(--white);
+  font-weight: 700; 
+  text-align: center; 
   flex: 1;
 }
 .topbar-subtitle {
@@ -194,17 +276,11 @@ ul { list-style: none; }
   color: var(--gray-400);
   font-style: italic;
   font-family: 'Playfair Display', serif;
+   font-weight: 700;
+  text-align: center; 
 }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
 
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  color: var(--navy);
-}
 
 /* ─── PAGE SECTIONS ───────────────────────────────────────── */
 .page-section {
@@ -229,22 +305,15 @@ ul { list-style: none; }
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
+  text-align: center;
 }
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 4px; height: 100%;
-  background: var(--navy);
-}
-.stat-card.accent::before { background: var(--crimson); }
-.stat-card.success::before { background: #15803d; }
+
 .stat-label {
   font-size: .72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .06em;
-  color: var(--gray-400);
+  color: var(--gray-800);
   margin-bottom: 8px;
 }
 .stat-value {
@@ -252,8 +321,11 @@ ul { list-style: none; }
   font-size: 2rem;
   color: var(--navy);
   line-height: 1;
+  color: var(--navy);
 }
-.stat-card.accent .stat-value { color: var(--crimson); }
+.stat-card.accent .stat-value { color: var(--navy); } 
+.stat-card.success .stat-value { color: var(--navy); }  
+
 
 /* ─── CARDS / PANELS ──────────────────────────────────────── */
 .panel {
@@ -782,14 +854,6 @@ tr:hover td { background: var(--navy-light); }
 }
 
 @media (max-width: 700px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  .main-content { margin-left: 0; }
-  .menu-toggle { display: flex; }
   .topbar { padding: 0 16px; }
   .page-section { padding: 16px; }
   .hero-banner { padding: 22px 20px; }
@@ -819,4 +883,21 @@ tr:hover td { background: var(--navy-light); }
 .auth-panel {
   max-width: 460px;
   margin: 12px auto;
+}
+
+/* ─── PROFILE BUTTON (admin topbar) ──────────────────────── */
+.profile-btn {
+  background: rgba(255,255,255,.15);
+  border: 2px solid rgba(255,255,255,.35);
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px; /* small gap from hamburger */
+  flex-shrink: 0;
+  transition: background var(--transition), border-color var(--transition);
 }
