@@ -788,7 +788,6 @@ function bindEvents() {
       rerenderAll();
       closeModal(userRegisterOverlay);
       showAlert(regAlert, `Registered for ${row.eventName} successfully.`, "success");
-      routeTo("user-my");
     });
   }
 
