@@ -4,11 +4,26 @@
  * Validates: given name, family name, phone, email, faculty, year.
  */
 
-export const FACULTIES = [
-  "Faculty of Digital Technologies",
-  "Faculty of Business and Management",
-  "Faculty of Law",
-  "Faculty of Social Sciences",
+export const MAJORS = [
+  "Bachelor of Science in Business Administration",
+  "Bachelor of Arts in Communication",
+  "Bachelor of Arts in International Relations and Diplomacy",
+  "Bachelor of Science in Political Science",
+  "Bachelor of Arts in Law",
+  "Bachelor of Science in Artificial Intelligence",
+  "Bachelor of Science in Cybersecurity",
+  "Bachelor of Science in Digital Infrastructure",
+  "Bachelor of Science in Information and Communications Technology",
+  "Bachelor of Science in Software Development",
+  "Bachelor of Science in Computer Science",
+  "Bachelor of Science in Information Systems",
+  "Bachelor of Science in Web and Mobile Application Development",
+  "Master of Business Administration",
+  "Master of Legal Studies",
+  "Master of Laws in International Business and Digital Technologies",
+  "Master of Laws in Cybersecurity",
+  "Master of Laws in Artificial Intelligence",
+  "Master of Science in Computer Science",
 ];
 
 export const YEARS = ["Freshman", "Sophomore", "Junior", "Senior"];
@@ -47,9 +62,9 @@ const RULES = {
     },
     { test: v => v.trim().length <= 100, message: "Email address is too long." },
   ],
-  faculty: [
-    { test: v => v.trim().length > 0, message: "Please select your faculty." },
-    { test: v => FACULTIES.includes(v.trim()), message: "Please select a valid faculty from the list." },
+  major: [
+    { test: v => v.trim().length > 0, message: "Please select your major." },
+    { test: v => MAJORS.includes(v.trim()), message: "Please select a valid major from the list." },
   ],
   year: [
     { test: v => v.trim().length > 0, message: "Please select your year of study." },
@@ -113,7 +128,7 @@ export function applyFieldState(input, errorEl, result) {
  * @param {HTMLFormElement} form
  */
 export function attachLiveValidation(form) {
-  const fields = ["givenName", "familyName", "phone", "email", "faculty", "year"];
+  const fields = ["givenName", "familyName", "phone", "email", "major", "year"];
   fields.forEach(field => {
     const input = form.querySelector(`[name="${field}"]`);
     const errorEl = form.querySelector(`[data-error="${field}"]`);

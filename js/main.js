@@ -4,7 +4,7 @@ import {
   applyFieldState,
   attachLiveValidation,
   clearValidation,
-  FACULTIES,
+  MAJORS,
   YEARS,
 } from "./modules/validation.js";
 import { openModal, closeModal, showAlert } from "./modules/dom.js";
@@ -102,7 +102,7 @@ const myRegAlert   = document.getElementById("reg-alert");
 const adminTbody       = document.getElementById("admin-tbody");
 const adminAlert       = document.getElementById("admin-alert");
 const adminSearchInput = document.getElementById("admin-search");
-const adminFacFilter   = document.getElementById("admin-fac-filter");
+const adminMajorFilter = document.getElementById("admin-major-filter");
 const adminEventFilter = document.getElementById("admin-event-filter");
 const adminResultCount = document.getElementById("admin-result-count");
 const adminBadge       = document.getElementById("admin-badge");
@@ -146,7 +146,7 @@ let currentUserEmail   = localStorage.getItem(USER_EMAIL_KEY) || "";
 let editingId          = null;
 let deletingId         = null;
 let adminQuery         = "";
-let adminFaculty       = "";
+let adminMajor         = "";
 let adminEvent         = "";
 let isAdminAuthenticated = localStorage.getItem(ADMIN_AUTH_KEY) === "1";
 
@@ -195,16 +195,11 @@ async function loadAdminCredentialsFromEnv() {
 }
 
 // ── Normalizers ─────────────────────────────────────────────
-function normalizeFacultyName(value) {
-  const raw = String(value || "").trim().toLowerCase();
-  if (!raw) return FACULTIES[0];
-  if (raw.includes("digital") || raw.includes("information technology") || raw.includes("it"))
-    return "Faculty of Digital Technologies";
-  if (raw.includes("business") || raw.includes("management"))
-    return "Faculty of Business and Management";
-  if (raw.includes("law"))    return "Faculty of Law";
-  if (raw.includes("social")) return "Faculty of Social Sciences";
-  return FACULTIES[0];
+function normalizeMajorName(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return MAJORS[0];
+  const match = MAJORS.find(m => m.toLowerCase() === raw.toLowerCase());
+  return match || MAJORS[0];
 }
 
 function normalizeYearName(value) {
@@ -235,7 +230,7 @@ function loadRegistrations() {
     if (!Array.isArray(parsed)) return [];
     return parsed.map(item => ({
       ...item,
-      faculty: normalizeFacultyName(item.faculty),
+      major: normalizeMajorName(item.major || item.faculty),
       year:    normalizeYearName(item.year),
     }));
   } catch { return []; }
@@ -356,7 +351,7 @@ function buildRegistration(data, eventId, existingId = null) {
     familyName:   data.familyName.trim(),
     email:        data.email.trim().toLowerCase(),
     phone:        data.phone.trim(),
-    faculty:      normalizeFacultyName(data.faculty),
+    major:      normalizeMajorName(data.major),
     year:         normalizeYearName(data.year),
     status:       data.status || "Registered",
     checkedIn:    Boolean(data.checkedIn),
@@ -371,7 +366,7 @@ function getFormData(form) {
     familyName: fd.get("familyName") || "",
     phone:      fd.get("phone")      || "",
     email:      fd.get("email")      || "",
-    faculty:    fd.get("faculty")    || "",
+    major:      fd.get("major")      || "",
     year:       fd.get("year")       || "",
     eventId:    fd.get("eventId")    || "",
   };
@@ -532,9 +527,9 @@ function getFilteredAdminRows() {
   return allRegistrations.filter(r => {
     const fullName = `${r.givenName} ${r.familyName}`.toLowerCase();
     const matchQ     = !q || fullName.includes(q) || r.email.toLowerCase().includes(q) || r.phone.includes(q);
-    const matchFac   = !adminFaculty || r.faculty  === adminFaculty;
+    const matchMajor = !adminMajor || r.major === adminMajor;
     const matchEvent = !adminEvent   || r.eventId  === adminEvent;
-    return matchQ && matchFac && matchEvent;
+    return matchQ && matchMajor && matchEvent;
   });
 }
 
@@ -575,7 +570,7 @@ function renderAdminTable() {
         <td>${escapeHtml(r.email)}</td>
         <td>${escapeHtml(r.eventName)}</td>
         <td>${escapeHtml(r.phone)}</td>
-        <td>${escapeHtml(r.faculty.replace("Faculty of ", ""))}</td>
+        <td>${escapeHtml(r.major)}</td>
         <td>${escapeHtml(r.year)}</td>
         <td>${statusBadge}</td>
         <td>${checkBadge}</td>
@@ -619,7 +614,7 @@ function openEditModal(id) {
   const row = allRegistrations.find(r => r.id === id);
   if (!row || !editForm) return;
   editingId = id;
-  ["givenName","familyName","phone","email","faculty","year","eventId"].forEach(field => {
+  ["givenName","familyName","phone","email","major","year","eventId"].forEach(field => {
     const el = editForm.querySelector(`[name="${field}"]`);
     if (el) el.value = row[field] || "";
   });
@@ -657,19 +652,19 @@ function closeAllActionMenus() {
 }
 
 // ── Populate dropdowns ───────────────────────────────────────
-function populateFacultyDropdowns() {
-  document.querySelectorAll("select[name='faculty']").forEach(sel => {
-    FACULTIES.forEach(f => {
+function populateMajorDropdowns() {
+  document.querySelectorAll("select[name='major']").forEach(sel => {
+    MAJORS.forEach(m => {
       const opt = document.createElement("option");
-      opt.value = f; opt.textContent = f;
+      opt.value = m; opt.textContent = m;
       sel.appendChild(opt);
     });
   });
-  if (adminFacFilter) {
-    FACULTIES.forEach(f => {
+  if (adminMajorFilter) {
+    MAJORS.forEach(m => {
       const opt = document.createElement("option");
-      opt.value = f; opt.textContent = f.replace("Faculty of ", "");
-      adminFacFilter.appendChild(opt);
+      opt.value = m; opt.textContent = m.replace(/^(Bachelor|Master) (of (Science|Arts|Laws|Business Administration|Legal Studies)|of) (in )?/, "");
+      adminMajorFilter.appendChild(opt);
     });
   }
 }
@@ -717,7 +712,7 @@ async function seedIfNeeded() {
         familyName:   p.familyName,
         email:        p.email.toLowerCase(),
         phone:        p.phone,
-        faculty:      p.faculty,
+        major:        p.major,
         year:         p.year,
         status:       "Registered",
         checkedIn:    false,
@@ -793,7 +788,7 @@ function bindEvents() {
 
   // ── Admin filters ──────────────────────────────────────────
   adminSearchInput?.addEventListener("input",  () => { adminQuery   = adminSearchInput.value; renderAdminTable(); });
-  adminFacFilter?.addEventListener("change",   () => { adminFaculty = adminFacFilter.value;   renderAdminTable(); });
+  adminMajorFilter?.addEventListener("change",   () => { adminMajor   = adminMajorFilter.value;   renderAdminTable(); });
   adminEventFilter?.addEventListener("change", () => { adminEvent   = adminEventFilter.value; renderAdminTable(); });
 
   refreshBtn?.addEventListener("click", async () => {
@@ -921,7 +916,7 @@ function bindEvents() {
 // ── Init ─────────────────────────────────────────────────────
 async function init() {
   await loadAdminCredentialsFromEnv();
-  populateFacultyDropdowns();
+  populateMajorDropdowns();
   populateYearDropdowns();
   populateEventDropdowns();
   bindEvents();

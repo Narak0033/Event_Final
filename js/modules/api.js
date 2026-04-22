@@ -70,15 +70,30 @@ export async function deleteRegistration(id) {
  */
 function mapUserToParticipant(user) {
   
-  const FACULTIES = [
-    "Faculty of Digital Technologies",
-    "Faculty of Business and Management",
-    "Faculty of Law",
-    "Faculty of Social Sciences",
+  const MAJORS = [
+    "Bachelor of Science in Business Administration",
+    "Bachelor of Arts in Communication",
+    "Bachelor of Arts in International Relations and Diplomacy",
+    "Bachelor of Science in Political Science",
+    "Bachelor of Arts in Law",
+    "Bachelor of Science in Artificial Intelligence",
+    "Bachelor of Science in Cybersecurity",
+    "Bachelor of Science in Digital Infrastructure",
+    "Bachelor of Science in Information and Communications Technology",
+    "Bachelor of Science in Software Development",
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Information Systems",
+    "Bachelor of Science in Web and Mobile Application Development",
+    "Master of Business Administration",
+    "Master of Legal Studies",
+    "Master of Laws in International Business and Digital Technologies",
+    "Master of Laws in Cybersecurity",
+    "Master of Laws in Artificial Intelligence",
+    "Master of Science in Computer Science",
   ];
 
   const YEARS = ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"];
-  const idx = (user.id - 1) % FACULTIES.length;
+  const idx = (user.id - 1) % MAJORS.length;
   const yidx = (user.id - 1) % YEARS.length;
 
   // Support locally-added overrides
@@ -88,7 +103,7 @@ function mapUserToParticipant(user) {
     familyName: user._familyName || user.name.split(" ").slice(1).join(" ") || "—",
     phone: user._phone || user.phone,
     email: user._email || (user.email.includes("@") ? user.email.replace(/(@.*)/, "@aupp.edu.kh") : user.email),
-    faculty: user._faculty || FACULTIES[idx],
+    major: user._major || MAJORS[idx],
     year: user._year || YEARS[yidx],
     registeredAt: user._registeredAt || new Date().toISOString(),
   };
@@ -107,7 +122,7 @@ function mapParticipantToUser(data) {
     _familyName: data.familyName,
     _phone: data.phone,
     _email: data.email,
-    _faculty: data.faculty,
+    _major: data.major,
     _year: data.year,
     _registeredAt: new Date().toISOString(),
   };

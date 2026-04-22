@@ -11,7 +11,7 @@
  * @param {string} faculty — selected faculty or "" for all
  * @returns {Participant[]} filtered list
  */
-export function filterParticipants(participants, query = "", faculty = "") {
+export function filterParticipants(participants, query = "", major = "") {
   const q = query.trim().toLowerCase();
   return participants.filter(p => {
     const fullName = `${p.givenName} ${p.familyName}`.toLowerCase();
@@ -21,34 +21,34 @@ export function filterParticipants(participants, query = "", faculty = "") {
       p.email.toLowerCase().includes(q) ||
       p.phone.includes(q);
 
-    const matchesFaculty = !faculty || p.faculty === faculty;
+    const matchesMajor = !major || p.major === major;
 
-    return matchesQuery && matchesFaculty;
+    return matchesQuery && matchesMajor;
   });
 }
 
 /**
  * Attach live search and filter listeners.
- * Calls renderFn(filteredParticipants) whenever query or faculty changes.
+ * Calls renderFn(filteredParticipants) whenever query or major changes.
  *
  * @param {object} options
  * @param {HTMLInputElement} options.searchInput
- * @param {HTMLSelectElement} options.facultySelect
+ * @param {HTMLSelectElement} options.majorSelect
  * @param {() => Participant[]} options.getParticipants — returns current full list
  * @param {(list: Participant[]) => void} options.renderFn
  * @param {(count: number) => void} [options.onCountChange]
  */
-export function attachSearch({ searchInput, facultySelect, getParticipants, renderFn, onCountChange }) {
+export function attachSearch({ searchInput, majorSelect, getParticipants, renderFn, onCountChange }) {
   function run() {
     const query = searchInput ? searchInput.value : "";
-    const faculty = facultySelect ? facultySelect.value : "";
-    const filtered = filterParticipants(getParticipants(), query, faculty);
+    const major = majorSelect ? majorSelect.value : "";
+    const filtered = filterParticipants(getParticipants(), query, major);
     renderFn(filtered);
     if (onCountChange) onCountChange(filtered.length);
   }
 
   if (searchInput) searchInput.addEventListener("input", run);
-  if (facultySelect) facultySelect.addEventListener("change", run);
+  if (majorSelect) majorSelect.addEventListener("change", run);
 
   // expose manual trigger
   return { run };

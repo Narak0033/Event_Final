@@ -10,16 +10,16 @@ import { highlightMatch } from "./search.js";
 export function updateStatCards(participants) {
   const totalEl = document.getElementById("stat-total");
   const spotsEl = document.getElementById("stat-spots");
-  const facultyEl = document.getElementById("stat-faculties");
+  const facultyEl = document.getElementById("stat-majors");
 
   const MAX = 50;
   const total = participants.length;
   const spots = Math.max(0, MAX - total);
-  const faculties = new Set(participants.map(p => p.faculty)).size;
+  const majors = new Set(participants.map(p => p.major)).size;
 
   if (totalEl) totalEl.textContent = total;
   if (spotsEl) spotsEl.textContent = spots;
-  if (facultyEl) facultyEl.textContent = faculties;
+  if (facultyEl) facultyEl.textContent = majors;
 }
 
 /* ── Table Rendering ───────────────────────────────────────── */
@@ -76,7 +76,7 @@ export function renderTable(tbody, participants, { adminMode = false, query = ""
       </td>
       <td>${email}</td>
       <td>${p.phone}</td>
-      <td><span class="badge-faculty">${p.faculty.replace("Faculty of ", "")}</span></td>
+      <td><span class="badge-faculty">${p.major.replace(/^(Bachelor|Master) (of|in) /, "")}</span></td>
       <td>${p.year}</td>
       ${actionsHtml}
     `;
@@ -104,7 +104,7 @@ export function renderRegCards(container, participants) {
       <div class="avatar">${initials}</div>
       <div class="reg-card-info">
         <div class="reg-card-name">${p.givenName} ${p.familyName}</div>
-        <div class="reg-card-meta">${p.faculty.replace("Faculty of ", "")} · ${p.year}</div>
+        <div class="reg-card-meta">${p.major.replace(/^(Bachelor|Master) (of|in) /, "")} · ${p.year}</div>
       </div>
     `;
     container.appendChild(div);

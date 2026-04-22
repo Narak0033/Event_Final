@@ -151,7 +151,7 @@
             </div>
             <div class="stat-card success">
               <div class="stat-label">My Registrations</div>
-              <div class="stat-value" id="stat-faculties">—</div>
+              <div class="stat-value" id="stat-majors">—</div>
             </div>
           </div>
 
@@ -251,8 +251,8 @@
               </svg>
               <input type="text" id="admin-search" placeholder="Search by name or email…" />
             </div>
-            <select class="filter-select" id="admin-fac-filter">
-              <option value="">All Faculties</option>
+            <select class="filter-select" id="admin-major-filter">
+              <option value="">All Majors</option>
             </select>
             <select class="filter-select" id="admin-event-filter">
               <option value="">All Events</option>
@@ -288,7 +288,7 @@
                 <th>Email</th>
                 <th>Event</th>
                 <th>Phone</th>
-                <th>Faculty</th>
+                <th>Major</th>
                 <th>Year</th>
                 <th>Status</th>
                 <th>Check-in</th>
@@ -354,9 +354,9 @@
             <span class="error-msg" data-error="year"></span>
           </div>
           <div class="form-group span-2">
-            <label>Faculty <span class="req">*</span></label>
-            <select name="faculty"><option value="">— Select —</option></select>
-            <span class="error-msg" data-error="faculty"></span>
+            <label>Major <span class="req">*</span></label>
+            <select name="major"><option value="">— Select —</option></select>
+            <span class="error-msg" data-error="major"></span>
           </div>
         </div>
       </form>
@@ -420,11 +420,11 @@
             <span class="error-msg" data-error="year"></span>
           </div>
           <div class="form-group span-2">
-            <label>Faculty <span class="req">*</span></label>
-            <select name="faculty">
-              <option value="">Select Faculty</option>
+            <label>Major <span class="req">*</span></label>
+            <select name="major">
+              <option value="">Select Major</option>
             </select>
-            <span class="error-msg" data-error="faculty"></span>
+            <span class="error-msg" data-error="major"></span>
           </div>
         </div>
       </form>
@@ -520,9 +520,9 @@
             <span class="error-msg" data-error="year"></span>
           </div>
           <div class="form-group span-2">
-            <label>Faculty <span class="req">*</span></label>
-            <select name="faculty"><option value="">Select</option></select>
-            <span class="error-msg" data-error="faculty"></span>
+            <label>Major <span class="req">*</span></label>
+            <select name="major"><option value="">Select</option></select>
+            <span class="error-msg" data-error="major"></span>
           </div>
         </div>
       </form>
@@ -544,13 +544,13 @@ import { updateStatCards } from "./js/modules/dom.js";
 
 // Mirror stat cards to admin dashboard duplicates
 const observer = new MutationObserver(() => {
-  ["total","spots","faculties"].forEach(k => {
+  ["total","spots","majors"].forEach(k => {
     const src = document.getElementById(`stat-${k}`);
     const dst = document.getElementById(`stat-${k}2`);
     if (src && dst) dst.textContent = src.textContent;
   });
 });
-["stat-total","stat-spots","stat-faculties"].forEach(id => {
+["stat-total","stat-spots","stat-majors"].forEach(id => {
   const el = document.getElementById(id);
   if (el) observer.observe(el, { childList: true, characterData: true, subtree: true });
 });
