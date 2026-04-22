@@ -93,7 +93,7 @@ const regAlert     = document.getElementById("reg-alert");
 
 const statTotal = document.getElementById("stat-total");
 const statSpots = document.getElementById("stat-spots");
-const statMy    = document.getElementById("stat-faculties");
+const statMy    = document.getElementById("stat-majors");
 
 const myRegTbody   = document.getElementById("my-reg-tbody");
 const myEmailLabel = document.getElementById("my-email-label");
@@ -490,7 +490,7 @@ function renderMyRegistrations() {
       const checkText    = r.checkedIn ? "Checked In" : "Pending";
       const actionButton = r.checkedIn
         ? '<button class="btn btn-ghost btn-sm" type="button" disabled>Locked</button>'
-        : `<button class="btn btn-danger btn-sm" type="button" data-my-action="unregister" data-id="${r.id}">Unregister</button>`;
+        : `<button class="btn btn-danger btn-sm" type="button" data-my-action="withdraw" data-id="${r.id}">Withdraw</button>`;
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${escapeHtml(r.eventName)}</td>
@@ -504,7 +504,7 @@ function renderMyRegistrations() {
     });
 }
 
-function unregisterMyRegistration(id) {
+function withdrawMyRegistration(id) {
   const row = allRegistrations.find(r => r.id === id);
   if (!row) return;
   if (row.email.toLowerCase() !== currentUserEmail) {
@@ -515,10 +515,10 @@ function unregisterMyRegistration(id) {
     showAlert(myRegAlert, "Checked-in registrations cannot be canceled.", "error", 2200);
     return;
   }
-  if (!window.confirm(`Unregister from ${row.eventName}?`)) return;
+  if (!window.confirm(`Withdraw from ${row.eventName}?`)) return;
   allRegistrations = allRegistrations.filter(r => r.id !== id);
   rerenderAll();
-  showAlert(myRegAlert, `You have unregistered from ${row.eventName}.`, "success", 2200);
+  showAlert(myRegAlert, `You have withdrawn from ${row.eventName}.`, "success", 2200);
 }
 
 // ── Render: admin table ──────────────────────────────────────
@@ -760,10 +760,10 @@ function bindEvents() {
     if (btn) openUserRegisterModal(btn.dataset.eventRegister);
   });
 
-  // ── My registrations unregister ────────────────────────────
+  // ── My registrations withdraw ──────────────────────────────
   myRegTbody?.addEventListener("click", e => {
-    const btn = e.target.closest("[data-my-action='unregister']");
-    if (btn) unregisterMyRegistration(Number(btn.dataset.id));
+    const btn = e.target.closest("[data-my-action='withdraw']");
+    if (btn) withdrawMyRegistration(Number(btn.dataset.id));
   });
 
   // ── User register modal ────────────────────────────────────
