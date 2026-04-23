@@ -45,7 +45,7 @@ body {
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
-/* ─── LAYOUT ─────────────────────────────────────────────── */
+/* LAYOUT  */
 .app-layout {
   display: flex;
   min-height: 100vh;
@@ -141,7 +141,7 @@ ul { list-style: none; }
   padding: 0 5px;
 }
 
-  /* ─── HIDE SIDEBAR COMPLETELY ────────────────────────────── */
+  /* HIDE SIDEBAR COMPLETELY */
   .sidebar {
     display: none !important;
   }
@@ -158,7 +158,7 @@ ul { list-style: none; }
     display: none !important;
   }
 
-  /* ─── HAMBURGER BUTTON (top-right) ───────────────────────── */
+  /* HAMBURGER BUTTON*/
   .hamburger-btn {
     background: none;
     border: none;
@@ -668,14 +668,14 @@ tr:hover td { background: var(--navy-light); }
 .hero-banner p { font-size: .9rem; color: rgba(255,255,255,.7); max-width: 480px; }
 .hero-accent { color: #7eb3ff; font-style: italic; }
 
-/* ─── TWO COL LAYOUT ──────────────────────────────────────── */
+/* TWO COL LAYOUT */
 .two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-/* ─── REGISTRATION CARD (user list) ───────────────────────── */
+/* REGISTRATION CARD (user list) */
 .reg-card {
   display: flex;
   align-items: center;
@@ -814,14 +814,14 @@ tr:hover td { background: var(--navy-light); }
   color: var(--crimson);
 }
 
-/* ─── DIVIDER ─────────────────────────────────────────────── */
+/* DIVIDER  */
 .divider {
   border: none;
   border-top: 1px solid var(--gray-200);
   margin: 16px 0;
 }
 
-/* ─── SUCCESS STEP ────────────────────────────────────────── */
+/* SUCCESS STEP  */
 .success-step {
   display: none;
   text-align: center;
@@ -846,7 +846,7 @@ tr:hover td { background: var(--navy-light); }
 }
 .success-step p { color: var(--gray-600); font-size: .9rem; }
 
-/* ─── RESPONSIVE ──────────────────────────────────────────── */
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .two-col { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
@@ -861,7 +861,7 @@ tr:hover td { background: var(--navy-light); }
   .stats-grid { grid-template-columns: 1fr 1fr; }
 }
 
-/* ─── UTILITY ─────────────────────────────────────────────── */
+/*UTILITY*/
 .text-right { text-align: right; }
 .text-center { text-align: center; }
 .mt-4 { margin-top: 16px; }
@@ -885,7 +885,7 @@ tr:hover td { background: var(--navy-light); }
   margin: 12px auto;
 }
 
-/* ─── PROFILE BUTTON (admin topbar) ──────────────────────── */
+/* PROFILE BUTTON*/
 .profile-btn {
   background: rgba(255,255,255,.15);
   border: 2px solid rgba(255,255,255,.35);
