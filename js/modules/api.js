@@ -4,64 +4,65 @@
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
-/**
- * Generic request wrapper with error handling.
- */
+// Generic request wrapper with error handling.
 async function request(method, endpoint, body = null) {
   const options = {
     method,
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    },
   };
   if (body) options.body = JSON.stringify(body);
   const response = await fetch(`${BASE_URL}${endpoint}`, options);
   if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-  return response.json();
+  const contentType = response.headers.get("content-type") || "";
+  const data = contentType.includes("application/json") ? await response.json() : null;
+  return {
+    data,
+    status: response.status,
+  };
 }
 
-/**
- * Fetch all registered participants.
- */
+// Fetch all registered participants.
 export async function getParticipants() {
-  const users = await request("GET", "/users");
+  const { data: users, status } = await request("GET", "/users");
+  if (status !== 200) throw new Error(`Unexpected status for getParticipants: ${status}`);
   return users.map(mapUserToParticipant);
 }
 
-/**
- * Fetch a single participant by ID.
- */
+// Fetch a single participant by ID.
 export async function getParticipantById(id) {
-  const user = await request("GET", `/users/${id}`);
+  const { data: user, status } = await request("GET", `/users/${id}`);
+  if (status !== 200) throw new Error(`Unexpected status for getParticipantById: ${status}`);
   return mapUserToParticipant(user);
 }
 
-
-/**
- * Register a new participant.
- * data — { givenName, familyName, phone, email, faculty, year }
- */
+// Register a new participant.
+// data — { givenName, familyName, phone, email, faculty, year }
 export async function createRegistration(data) {
   const payload = mapParticipantToUser(data);
-  const result = await request("POST", "/users", payload);
-  // JSONPlaceholder echoes the body with a generated id
+  const { data: result, status } = await request("POST", "/users", payload);
+  if (status !== 201) throw new Error(`Unexpected status for createRegistration: ${status}`);
   return mapUserToParticipant({ ...payload, id: result.id });
 }
 
-/**
- * Update an existing participant record.
-   data — updated participant fields
- */
+// Update an existing participant record.
+// data — updated participant fields
 export async function updateRegistration(id, data) {
   const payload = mapParticipantToUser(data);
-  const result = await request("PUT", `/users/${id}`, payload);
+  const { data: result, status } = await request("PUT", `/users/${id}`, payload);
+  if (status !== 200) throw new Error(`Unexpected status for updateRegistration: ${status}`);
   return mapUserToParticipant({ ...result, id });
 }
 
 
-/**
- * Delete a participant by ID.
- */
+// Delete a participant by ID.
 export async function deleteRegistration(id) {
-  await request("DELETE", `/users/${id}`);
+  const { status } = await request("DELETE", `/users/${id}`);
+  if (status !== 200 && status !== 204) {
+    throw new Error(`Unexpected status for deleteRegistration: ${status}`);
+  }
 }
 
 /**
