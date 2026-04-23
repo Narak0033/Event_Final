@@ -1,9 +1,3 @@
-/**
- * validation.js — Meas Marady
- * Client-side form validation for the registration form.
- * Validates: given name, family name, phone, email, faculty, year.
- */
-
 export const MAJORS = [
   "Bachelor of Science in Business Administration",
   "Bachelor of Arts in Communication",
@@ -28,10 +22,6 @@ export const MAJORS = [
 
 export const YEARS = ["Freshman", "Sophomore", "Junior", "Senior"];
 
-/**
- * Rules for each field.
- * Each rule: { test: (val) => bool, message: string }
- */
 const RULES = {
   givenName: [
     { test: v => v.trim().length > 0, message: "Given name is required." },
@@ -72,12 +62,6 @@ const RULES = {
   ],
 };
 
-/**
- * Validate a single field.
- * @param {string} field — key matching RULES
- * @param {string} value — the current input value
- * @returns {{ valid: boolean, message: string }}
- */
 export function validateField(field, value) {
   const rules = RULES[field];
   if (!rules) return { valid: true, message: "" };
@@ -89,11 +73,6 @@ export function validateField(field, value) {
   return { valid: true, message: "" };
 }
 
-/**
- * Validate all fields of a registration object.
- * @param {object} data — { givenName, familyName, phone, email, faculty, year }
- * @returns {{ valid: boolean, errors: object }}
- */
 export function validateForm(data) {
   const errors = {};
   let valid = true;
@@ -107,12 +86,6 @@ export function validateForm(data) {
   return { valid, errors };
 }
 
-/**
- * Apply/remove .is-invalid and show/hide error span for a field.
- * @param {HTMLElement} input
- * @param {HTMLElement} errorEl
- * @param {object} result — from validateField()
- */
 export function applyFieldState(input, errorEl, result) {
   if (result.valid) {
     input.classList.remove("is-invalid");
@@ -123,10 +96,6 @@ export function applyFieldState(input, errorEl, result) {
   }
 }
 
-/**
- * Attach live validation listeners to all form inputs.
- * @param {HTMLFormElement} form
- */
 export function attachLiveValidation(form) {
   const fields = ["givenName", "familyName", "phone", "email", "major", "year"];
   fields.forEach(field => {
@@ -140,10 +109,6 @@ export function attachLiveValidation(form) {
   });
 }
 
-/**
- * Clear all validation states on a form.
- * @param {HTMLFormElement} form
- */
 export function clearValidation(form) {
   form.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
   form.querySelectorAll(".error-msg").forEach(el => { el.textContent = ""; el.classList.remove("visible"); });

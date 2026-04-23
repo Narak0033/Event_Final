@@ -1,8 +1,3 @@
-/**
- * dom.js — Shared DOM utilities used across all modules.
- * Handles table rendering, modal open/close, alerts, stat card updates.
- */
-
 import { highlightMatch } from "./search.js";
 
 /* ── Stat Cards ────────────────────────────────────────────── */
@@ -22,18 +17,7 @@ export function updateStatCards(participants) {
   if (facultyEl) facultyEl.textContent = majors;
 }
 
-/* ── Table Rendering ───────────────────────────────────────── */
-
-/**
- * Render participants into a <tbody>.
- * @param {HTMLElement} tbody
- * @param {Participant[]} participants
- * @param {object} options
- * @param {boolean} options.adminMode — show action buttons
- * @param {string} [options.query] — for highlighting
- * @param {Function} [options.onEdit]
- * @param {Function} [options.onDelete]
- */
+/*  Table Rendering  */
 export function renderTable(tbody, participants, { adminMode = false, query = "", onEdit, onDelete } = {}) {
   tbody.innerHTML = "";
 
@@ -88,8 +72,7 @@ export function renderTable(tbody, participants, { adminMode = false, query = ""
   if (onDelete) window._deleteFn = onDelete;
 }
 
-/* ── Registration Cards (user view) ────────────────────────── */
-
+/*  Registration Cards (user view)  */
 export function renderRegCards(container, participants) {
   container.innerHTML = "";
   if (participants.length === 0) {
@@ -117,8 +100,7 @@ export function renderRegCards(container, participants) {
   }
 }
 
-/* ── Modal helpers ─────────────────────────────────────────── */
-
+/*  Modal helpers  */
 export function openModal(overlay) {
   overlay.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -128,8 +110,7 @@ export function closeModal(overlay) {
   document.body.style.overflow = "";
 }
 
-/* ── Alert helpers ─────────────────────────────────────────── */
-
+/*  Alert helpers  */
 let alertTimeout;
 export function showAlert(el, message, type = "success", duration = 4000, iconMarkup = "") {
   const defaultIcon = `
@@ -147,13 +128,13 @@ export function showAlert(el, message, type = "success", duration = 4000, iconMa
   if (duration > 0) alertTimeout = setTimeout(() => el.classList.remove("visible"), duration);
 }
 
-/* ── Loading row ────────────────────────────────────────────── */
+/*  Loading row  */
 
 export function showLoadingRow(tbody, cols = 5) {
   tbody.innerHTML = `<tr class="loading-row"><td colspan="${cols}">Loading participants…</td></tr>`;
 }
 
-/* ── Avatar color ───────────────────────────────────────────── */
+/*  Avatar color  */
 
 const COLORS = ["#003070","#AD0000","#1d6a5b","#7c3aed","#b45309","#0369a1"];
 export function avatarColor(name) {

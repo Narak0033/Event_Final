@@ -65,10 +65,8 @@ export async function deleteRegistration(id) {
   }
 }
 
-/**
- * Map JSONPlaceholder user → our Participant schema.
- * We derive faculty/year from the user's company/address to simulate real data.
- */
+// Map JSONPlaceholder user → our Participant schema.
+// We derive faculty/year from the user's company/address to simulate real data
 function mapUserToParticipant(user) {
   
   const MAJORS = [
